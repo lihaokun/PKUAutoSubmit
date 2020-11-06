@@ -6,13 +6,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from urllib.parse import quote
 from urllib import request
+import pyotp
 import time
 import warnings
 import json
 warnings.filterwarnings('ignore')
 
 
-def login(driver, userName, password, retry=0):
+def login(driver, userName, password,otpseret, retry=0):
     if retry == 3:
         raise Exception('门户登录失败')
 
@@ -33,7 +34,11 @@ def login(driver, userName, password, retry=0):
     driver.find_element_by_id('password').send_keys(password)
     time.sleep(0.1)
     if (driver.find_element_by_id('otp_area').get_attribute("style")!="display: none;"):
-        driver.find_element_by_id('otp_code').send_keys(input("手机令牌(otp code):"))
+        if (otpseret==""):
+            driver.find_element_by_id('otp_code').send_keys(input("手机令牌(otp code):"))
+        else:
+            otp=pyotp.TOTP(otpseret)
+            driver.find_element_by_id('otp_code').send_keys(otp.now())
         time.sleep(0.1)
     driver.find_element_by_id('logon_button').click()
     try:
@@ -237,9 +242,9 @@ def wechat_notification(userName, sckey):
         print(str(response['errno']) + ' error: ' + response['errmsg'])
 
 
-def run(driver, userName, password, campus, reason, destination, track,
+def run(driver, userName, password,otpseret, campus, reason, destination, track,
         habitation, district, street, capture, path, wechat, sckey):
-    login(driver, userName, password)
+    login(driver, userName, password,otpseret)
     print('=================================')
 
     go_to_application_out(driver)

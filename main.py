@@ -23,7 +23,7 @@ if __name__ == '__main__':
     conf = ConfigParser()
     conf.read('config.ini', encoding='utf8')
 
-    userName, password = dict(conf['login']).values()
+    userName, password,otpseret = dict(conf['login']).values()
     campus, reason = dict(conf['common']).values()
     destination, track = dict(conf['out']).values()
     habitation, district, street = dict(conf['in']).values()
@@ -35,6 +35,6 @@ if __name__ == '__main__':
     print('Driver Launching...')
 
     driver_pjs = webdriver.PhantomJS(executable_path=sys_path())
-    run(driver_pjs, userName, password, campus, reason, destination, track,
+    run(driver_pjs, userName, password,otpseret, campus, reason, destination, track,
         habitation, district, street, capture, path, wechat, sckey)
     driver_pjs.quit()
