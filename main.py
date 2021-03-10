@@ -34,9 +34,7 @@ def go(config):
     wechat = conf.getboolean('wechat', '是否需要微信通知')
     sckey = conf['wechat']['SCKEY']
 
-    print('Driver Launching...')
 
-    driver_pjs = webdriver.PhantomJS(executable_path=sys_path())
     run(driver_pjs, userName, password,otpseret, campus, reason, destination, track,
         habitation, district, street, capture, path, wechat, sckey)
 
@@ -44,8 +42,9 @@ def go(config):
 if __name__ == '__main__':
     print('Driver Launching...')
     driver_pjs = webdriver.PhantomJS(
-        executable_path=sys_path(),
-        service_args=['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1'])
+        executable_path=sys_path()
+        # ,service_args=['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1']
+        )
     print('Driver Launched\n')
 
     lst_conf = sorted([
